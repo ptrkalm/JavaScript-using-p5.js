@@ -10,6 +10,7 @@ class PickUp{
   draw(){
     if (this.valid){
       noStroke();
+      strokeWeight(2);
       fill(this.color);
       ellipse(this.x, this.y, this.size, this.size);
     }
