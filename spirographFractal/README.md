@@ -1,2 +1,2 @@
 Preview
-![preview](spirorgraph.gif)
+![preview](spirograph.gif)
