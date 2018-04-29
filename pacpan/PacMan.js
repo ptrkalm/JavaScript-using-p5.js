@@ -35,7 +35,6 @@ class PacMan{
       if (this.moveIsPossible(dir)){
         this.x = this.x + this.xDir * this.speed;
         this.pos[1] = this.pos[1] + this.xDir;
-        console.log(this.pos[1]);
         if(this.pos[1] == 30){
           this.pos[1] = 3;
           this.x = 0;
@@ -79,19 +78,19 @@ class PacMan{
 
   changeDirection(){
     if(this.x % mapScale == 0 && this.y % mapScale == 0){
-      if (this.nextDir == 'l'){
+      if (this.nextDir == 'l' && this.moveIsPossible('l')){
         this.currDir = 'x';
         this.xDir = -1;
       }
-      else if (this.nextDir== 'r'){
+      else if (this.nextDir== 'r' && this.moveIsPossible('r')){
         this.currDir = 'x';
         this.xDir = 1;
       }
-      else if (this.nextDir == 'u'){
+      else if (this.nextDir == 'u' && this.moveIsPossible('u')){
         this.currDir = 'y';
         this.yDir = -1;
       }
-      else if (this.nextDir == 'd'){
+      else if (this.nextDir == 'd' && this.moveIsPossible('d')){
         this.currDir = 'y';
         this.yDir = 1;
       }

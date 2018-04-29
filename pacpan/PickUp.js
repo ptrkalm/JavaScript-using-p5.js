@@ -1,6 +1,6 @@
 class PickUp{
   constructor(x, y){
-    this.size = 10;
+    this.size = 6;
     this.x = x;
     this.y = y;
     this.color = color(255);
@@ -15,9 +15,12 @@ class PickUp{
       ellipse(this.x, this.y, this.size, this.size);
     }
   }
+
   pickup(x, y, size){
     let distance = sqrt(pow(x - this.x, 2) + pow(y - this.y, 2));
-    if (distance < size/2 + this.size/2)
+    if (distance < size/2 + this.size/2 && this.valid == 1){
       this.valid = 0;
+      countScore(10);
+    }
   }
 }

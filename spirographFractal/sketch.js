@@ -2,7 +2,7 @@ var path;
 
 function setup() {
   createCanvas(400, 400);
-  frameRate(60);
+  frameRate(1);
   path = new Array();
   r1 = 100; x1 = 200; y1 = 200;
   sun = new Orbit(x1, y1, r1, null, 0.003);
