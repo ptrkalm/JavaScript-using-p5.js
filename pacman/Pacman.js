@@ -37,6 +37,7 @@ class Pacman extends MyObject {
   move(){
     this.changeDirection();
     super.move();
+    updatePMPos();
   }
 
 }

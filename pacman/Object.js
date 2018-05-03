@@ -21,8 +21,6 @@ class MyObject {
       else if (this.dir == 'd') {this.drawY += 0.5; if(Math.floor(this.drawY) == this.drawY) this.y = this.drawY;}
       if      (this.x == 29) {this.x = 0; this.drawX = 0;}
       else if (this.x == -1) {this.x = 28; this.drawX = 28;}
-      return true;
     }
-    return false;
   }
 }

@@ -1,7 +1,7 @@
 var pacman;
-var pmX;
-var pmY;
-var pmDir;
+var pmX = 13;
+var pmY = 23;
+var pmDir = 'l';
 
 function setup() {
   frameRate(10);
@@ -11,7 +11,8 @@ function setup() {
   //blinky = new Ghost("Blinky", color(255, 0, 0), 13, 11, 13.5, 11, 'l');
   //inky = new Ghost("Inky", color(0, 255, 255), 11, 14, 11.5, 14, 'u');
   //pinky = new Ghost("Pinky", color(255, 180, 255), 13, 14, 13.5, 14, 'u');
-  clyde = new Ghost("Clyde", color(255, 180, 78), 15, 14, 15.5, 14, 'u');
+  //clyde = new Clyde();
+  blinky = new Blinky();
 }
 
 function drawMaze(){
@@ -47,15 +48,15 @@ function updatePMPos(){
 }
 
 function processGhosts(){
-  //processBlinky();
+  processBlinky();
   //processInky();
   //processPinky();
-  processClyde();
+  //processClyde();
 }
 
 function processBlinky(){
   blinky.draw();
-  if(!blinky.move()) blinky.changeDirection(pacman.x, pacman.y);
+  blinky.move();
 }
 function processInky(){
   inky.draw();
@@ -67,7 +68,7 @@ function processPinky(){
 }
 function processClyde(){
   clyde.draw();
-  if(!clyde.move()) clyde.changeDirection(pacman.x, pacman.y);
+  clyde.move();
 }
 
 function draw(){

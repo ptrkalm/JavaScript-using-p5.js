@@ -1,9 +1,9 @@
 class Ghost extends MyObject{
-  constructor(name, color, x, y, drawX, drawY, dir){
+  constructor(color, x, y, drawX, drawY, dir){
     super(color, x, y, drawX, drawY, dir);
-    this.name = name;
     this.leftHouse = false;
     this.changedDir = false;
+    this.mode = "ghostHouse"
   }
 
   moveIsPossible(dir){
@@ -23,42 +23,35 @@ class Ghost extends MyObject{
     return false;
   }
 
-  changeDirection(){
-    console.log(this.dir);
-    var x, y;
-    if (this.name == "Blinky"){x = pmX; y = pmY};
-    if (this.name == "Pinky"){
-      if      (pmDir == 'r'){x = pmX + 4; y = pmY;}
-      else if (pmDir == 'l'){x = pmX - 4; y = pmY;}
-      else if (pmDir == 'u'){x = pmX; y = pmY - 4;}
-      else if (pmDir == 'd'){x = pmX; y = pmY + 4;}
-    }
-    if (this.name == "Clyde"){
-      if (distToPacman(this.x, this.y, pmX, pmY) > 8){x = pmX, y = pmY}
-      else {x = 0; y = 33};
-    }
+  changeDirection(mode){
+    var trgt = this.moveMode(mode);
+    //console.log(trgt[0], trgt[1]);
+
+    if(this.changedDir == true) {this.changedDir = false; return true;}
+
     var nextDir = this.dir;
     var min = 1000;
-    var distToPM;
+    var distToTarget;
+
     if (this.dir != 'l' && this.moveIsPossible('r') && this.y == this.drawY){
-      distToPM = distToPacman(this.x+1, this.y, x, y);
-      if (distToPM <= min){min = distToPM; nextDir = 'r';}
+      distToTarget = distToPacman(this.x+1, this.y, trgt[0], trgt[1]);
+      if (distToTarget <= min){min = distToTarget; nextDir = 'r';}
     }
     if (this.dir != 'u' && this.moveIsPossible('d') && this.x == this.drawX){
-      distToPM = distToPacman(this.x, this.y+1, x, y);
-      if (distToPM <= min){min = distToPM; nextDir = 'd';}
+      distToTarget = distToPacman(this.x, this.y+1, trgt[0], trgt[1]);
+      if (distToTarget <= min){min = distToTarget; nextDir = 'd';}
     }
     if (this.dir != 'r' && this.moveIsPossible('l') && this.y == this.drawY){
-      distToPM= distToPacman(this.x-1, this.y, x, y);
-      if (distToPM <= min){min = distToPM; nextDir = 'l';}
+      distToTarget= distToPacman(this.x-1, this.y, trgt[0], trgt[1]);
+      if (distToTarget <= min){min = distToTarget; nextDir = 'l';}
     }
     if (this.dir != 'd' && this.moveIsPossible('u') && this.x == this.drawX){
-      distToPM = distToPacman(this.x, this.y-1, x, y);
-      if (distToPM <= min){min = distToPM; nextDir = 'u';}
+      distToTarget = distToPacman(this.x, this.y-1, trgt[0], trgt[1]);
+      if (distToTarget <= min){min = distToTarget; nextDir = 'u';}
     }
 
-    if(nextDir != this.dir) {this.dir = nextDir; this.changedDir = true; return true;}
-    return false;
+    if (nextDir == this.dir) {return true;}
+    else {this.dir = nextDir; this.changedDir = true; return false;}
   }
 
   atIntersection(){
@@ -72,22 +65,35 @@ class Ghost extends MyObject{
     return false;
   }
 
-  changedDirection(){
-    if(!this.atIntersection()) return false;
-    updatePMPos();
-    return this.changeDirection(pmX, pmY);
-  }
-
   inHouse(){
     if(this.x < 10 || this.x > 17 ||
        this.y < 12 || this.y > 16) return false;
     return true;
   }
 
+  ghostHouseMode(){
+    if(!this.moveIsPossible(this.dir)){
+      if(this.dir == 'u') this.dir = 'd';
+      else this.dir = 'u';
+    }
+    return true;
+  }
+
+  moveMode(mode){
+    if       (mode == "scatter") return this.scatterTile();
+    else if  (mode == "chase")   return this.chaseTile();
+  }
+
   move(){
-    if (!this.inHouse()) this.leftHouse = true;
-    if (this.changedDir == true) this.changedDir = false;
-    else if (this.changedDirection()) return false;
-    super.move();
+    this.changeMode();
+    if (
+      (this.mode == "ghostHouse" && this.ghostHouseMode()) ||
+      (this.mode == "scatter"    && this.changeDirection("scatter"))  ||
+      (this.mode == "chase"      && this.changeDirection("chase"))
+      )
+      super.move();
+    //if (!this.inHouse()) this.leftHouse = true;
+    //if (this.changedDir == true) this.changedDir = false;
+    //else if (this.changedDirection()) return false;
   }
 }
